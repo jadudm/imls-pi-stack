@@ -3,10 +3,11 @@
 set -euox pipefail
 
 REPO_NAME="imls-pi-stack"
-GHUSER="jadudm"
-GITHUB_REPO="${GHUSER}/${REPO_NAME}"
-VERSION=$(curl -s "https://raw.githubusercontent.com/${GITHUB_REPO}/main/dev-version.txt")
-BINARY_URL="https://github.com/${GITHUB_REPO}/releases/download/${VERSION}"
+TESTUSER="jadudm"
+BINUSER="jadudm"
+GITHUB_REPO="${TESTUSER}/${REPO_NAME}"
+VERSION=$(curl -s "https://raw.githubusercontent.com/${TESTUSER}/${REPO_NAME}/main/dev-version.txt")
+BINARY_URL="https://github.com/${BINUSER}/${REPO_NAME}/releases/download/${VERSION}"
 
 # install binaries into /usr/local/bin.
 for bin in "wifi-hardware-search-cli" "input-initial-configuration" "session-counter" "log-event"
@@ -23,7 +24,7 @@ sudo curl -s "https://raw.githubusercontent.com/${GITHUB_REPO}/main/config.init.
 
 # unpack playbook into /opt/imls/source.
 VLESS_VERSION=$(echo "${VERSION}" | cut -b2-)  # remove leading v.
-SOURCE_URL="https://github.com/${GITHUB_REPO}/archive/refs/tags/${VERSION}.tar.gz"
+SOURCE_URL="https://github.com/${BINUSER}/${REPO_NAME}/archive/refs/tags/${VERSION}.tar.gz"
 [ -d "${DEST}/source/" ] && sudo rm -rf "${DEST}/source/"
 pushd "${DEST}"
 curl -L -s "${SOURCE_URL}" | sudo tar xz

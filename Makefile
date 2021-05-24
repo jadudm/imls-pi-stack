@@ -3,11 +3,13 @@ VERSION := $(shell git describe --tags --abbrev=0)
 .PHONY: dev
 
 stamp_the_dev_version:
+	@echo Setting us to dev $(VERSION)
 	@echo $(VERSION) > dev-version.txt
 	git add dev-version.txt
 	git commit -m "dev release: $(VERSION)"
 
 stamp_the_release_version:
+	@echo Setting us to prod $(VERSION)
 	@echo $(VERSION) > prod-version.txt
 	git add prod-version.txt
 	git commit -m "prod release: $(VERSION)"
