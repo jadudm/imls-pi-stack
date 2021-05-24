@@ -296,7 +296,6 @@ main () {
     # ansible_pull_playbook
     serviceunit_playbook
     disable_interactive_login
-    enable_playbooks
     if [ "${SOMETHING_WENT_WRONG}" -ne 0 ]; then
         _error "Things finished with errors."
         _error "We have logged the errors at ${SETUP_LOGFILE}"
@@ -304,6 +303,7 @@ main () {
     else
         _status "All done!"
         _status "We're rebooting in one minute!"
+        enable_playbooks
 
         # If the NOREBOOT or DEVELOP flags are NOT set, then reboot.
         if [[ -z "${NOREBOOT}" && -z "${DEVELOP}" ]]; then
