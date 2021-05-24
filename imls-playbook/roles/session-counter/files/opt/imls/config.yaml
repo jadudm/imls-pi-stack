@@ -1,5 +1,7 @@
 monitoring:
-  # How often we check health, in seconds.
+  # This is an internal health check for session-counter.
+  # Every `pinginterval` seconds, the internal process network
+  # is checked to make sure nothing has stalled/hung.
   pinginterval: 30
   # The maximum number of HTTP errors we will tolerate
   # in a window before crashing out and letting systemd restart us.
@@ -13,7 +15,6 @@ monitoring:
   uniqueness_window: 120
 # These are two different endpoints.
 # They will both go through umbrella...
-# So only the path should be
 umbrella:
   scheme: https
   host: api.data.gov
