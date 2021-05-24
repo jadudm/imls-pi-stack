@@ -3,15 +3,15 @@
 set -euox pipefail
 
 REPO_NAME="imls-pi-stack"
-GITHUB_REPO="cantsin/${REPO_NAME}"
+GHUSER="jadudm"
+GITHUB_REPO="${GHUSER}/${REPO_NAME}"
 VERSION=$(curl -s "https://raw.githubusercontent.com/${GITHUB_REPO}/main/prod-version.txt")
 BINARY_URL="https://github.com/${GITHUB_REPO}/releases/download/${VERSION}"
-# sometimes we have trouble overwriting.
-sudo rm -rf /usr/local/bin/{wifi-hardware-search-cli,input-initial-configuration,session-counter,log-event}
 
 # install binaries into /usr/local/bin.
 for bin in "wifi-hardware-search-cli" "input-initial-configuration" "session-counter" "log-event"
 do
+    sudo rm -rf "/usr/local/bin/${bin}"
     sudo curl -L -s "${BINARY_URL}/${bin}" -o "/usr/local/bin/${bin}"
     sudo chmod +x "/usr/local/bin/${bin}"
 done
