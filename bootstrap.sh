@@ -69,8 +69,7 @@ NC='\033[0m'
 
 _log_event () {
     TAG="$1"
-    INFO="{\"message\": \"$2\"}"
-    [ -f /usr/local/bin/log-event ] && /usr/local/bin/log-event --tag "'${TAG}'" --info "'${INFO}'"
+    [ -f /usr/local/bin/log-event ] && /usr/local/bin/log-event --tag "\"${TAG}\"" --info "{\"bootstrap\": \"$2\"}"
 }
 
 _msg () {
