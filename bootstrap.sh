@@ -262,6 +262,13 @@ serviceunit_playbook () {
     fi
 }
 
+enable_playbooks () {
+    _status "Enabling playbooks"
+    flagfile="${PLAYBOOK_WORKING_DIR}/RUNPLAYBOOKS"
+    sudo touch "${flagfile}"
+    sudo chmod a+r "${flagfile}"
+}
+
 disable_interactive_login () {
     # https://www.raspberrypi.org/forums/viewtopic.php?t=21632
     # Disables console and desktop login using the builtin script.
@@ -289,6 +296,7 @@ main () {
     # ansible_pull_playbook
     serviceunit_playbook
     disable_interactive_login
+    enable_playbooks
     if [ "${SOMETHING_WENT_WRONG}" -ne 0 ]; then
         _error "Things finished with errors."
         _error "We have logged the errors at ${SETUP_LOGFILE}"

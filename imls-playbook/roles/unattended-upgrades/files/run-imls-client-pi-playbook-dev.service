@@ -1,5 +1,6 @@
 [Unit]
 Description=Update and run the development IMLS playbook.
+ConditionPathExists=/opt/imls/RUNPLAYBOOKS
 
 [Service]
 ExecStartPre=sh -c "mkdir -p /opt/imls"
