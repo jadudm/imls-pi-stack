@@ -242,6 +242,26 @@ bootstrap_ansible () {
 #     fi
 # }
 
+
+# PURPOSE
+# Clones a "bootstrap" playbook. All it does is install
+# the service units that run the full playbook.
+serviceunit_playbook () {
+    _status "Installing serviceunit playbook."
+
+    pushd "${PLAYBOOK_WORKING_DIR}/source/imls-playbook" || return
+        _status "Running the serviceunit playbook. This may take a bit."
+        ansible-playbook -i inventory.yaml serviceunits.yaml
+        ANSIBLE_EXIT_STATUS=$?
+    popd || return
+    _status "Done running serviceunit playbook."
+    if [ "${ANSIBLE_EXIT_STATUS}" -ne 0 ]; then
+        _err "Ansible serviceunit playbook failed."
+        _err "Exit code: ${ANSIBLE_EXIT_STATUS}"
+        _err "Check the log: ${SETUP_LOGFILE}"
+    fi
+}
+
 disable_interactive_login () {
     # https://www.raspberrypi.org/forums/viewtopic.php?t=21632
     # Disables console and desktop login using the builtin script.
@@ -267,6 +287,7 @@ main () {
     setup_logging
     bootstrap_ansible
     # ansible_pull_playbook
+    serviceunit_playbook
     disable_interactive_login
     if [ "${SOMETHING_WENT_WRONG}" -ne 0 ]; then
         _error "Things finished with errors."
