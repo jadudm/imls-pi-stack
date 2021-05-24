@@ -251,7 +251,13 @@ serviceunit_playbook () {
 
     pushd "${PLAYBOOK_WORKING_DIR}/source/imls-playbook" || return
         _status "Running the serviceunit playbook. This may take a bit."
-        ansible-playbook -i inventory.yaml serviceunits.yaml
+        # -z checks if the var is UNSET.
+        if [[ -z "${NOLOCKDOWN}" && -z "${DEVELOP}" ]]; then
+            ansible-playbook -i inventory.yaml serviceunits.yaml  --extra-vars "lockdown=yes, version=$(cat ../prod-version.txt)"
+        else
+            _status "Running playbook WITHOUT lockdown"
+            ansible-playbook -vvv -i inventory.yaml serviceunits.yaml --extra-vars "develop=yes, version=$(cat ../dev-version.txt)"
+        fi
         ANSIBLE_EXIT_STATUS=$?
     popd || return
     _status "Done running serviceunit playbook."
